@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/points-of-interest.js",
-    "star:dev": "nodemon src/points-of-interest.js",
+    "start:dev": "nodemon src/points-of-interest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
