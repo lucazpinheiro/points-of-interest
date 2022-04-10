@@ -10,8 +10,8 @@ export default async function getPointsByDistance (query) {
 
   const closestPoints = points.filter(point => {
     const distanceBetweenPoints = calculateDistanceBetweenTwoPoints(point, {
-      x_axis: query.x,
-      y_axis: query.y
+      x: query.x,
+      y: query.y
     })
     return distanceBetweenPoints <= distance
   })
