@@ -7,7 +7,7 @@ export default {
       const [points, errors] = await services.getAllPoints()
       if (errors) {
         res.status(500).json({
-          error: 'something went wrong'
+          msg: 'Internal server error'
         })
         return
       }
@@ -27,15 +27,40 @@ export default {
     const [points, errors] = await services.getPointsByDistance(req.query)
     if (errors) {
       res.status(500).json({
-        error: 'something went wrong'
+        error: 'Internal server error'
       })
       return
     }
     res.status(200).json(points)
   },
   async postPointsHandler (req, res) {
+    const { body } = req
+    if (objectIsEmpty(body)) {
+      res.status(400).json({
+        msg: 'bad request',
+        errors: 'body is empty'
+      })
+      return
+    }
+
+    const [bodyIsOk, bodyErrors] = services.validateBody(body)
+    if (!bodyIsOk) {
+      res.status(400).json({
+        msg: 'bad request',
+        errors: bodyErrors
+      })
+      return
+    }
+
+    const [newPointIsOk, newPointErrors] = await services.saveNewPoint(body)
+    if (!newPointIsOk) {
+      res.status(500).json({
+        msg: 'Internal server error'
+      })
+      return
+    }
     res.status(200).json({
-      msg: 'creating point'
+      msg: 'new point saved'
     })
   }
 }
