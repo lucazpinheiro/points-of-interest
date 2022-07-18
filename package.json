@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/points-of-interest.js",
     "start:dev": "nodemon src/points-of-interest.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "vitest": "^0.18.1"
   }
 }
