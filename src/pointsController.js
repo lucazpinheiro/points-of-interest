@@ -52,7 +52,10 @@ export default {
       return
     }
 
-    const [newPointIsOk, newPointErrors] = await services.saveNewPoint(body)
+    const [newPointIsOk, newPointErrors] = await services.saveNewPoint({
+      newPointObject: body,
+      db: services.db
+    })
     if (!newPointIsOk) {
       res.status(500).json({
         msg: 'Internal server error'

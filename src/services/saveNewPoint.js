@@ -1,11 +1,12 @@
-import db from './db.js'
-
-export default async function getAllPoints (newPoint) {
+export default async ({
+  newPointObject,
+  db
+}) => {
   try {
     const points = await db.saveNewPointOnDB({
-      name: newPoint.name,
-      x_axis: newPoint.x,
-      y_axis: newPoint.y
+      name: newPointObject.name,
+      x_axis: newPointObject.x,
+      y_axis: newPointObject.y
     })
     return [points, null]
   } catch (error) {
