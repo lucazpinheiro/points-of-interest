@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mongo:
+    image: 'mongo'
+    ports:
+      - "27017:27017"
+  points-of-interest:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+     - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - "mongo"
