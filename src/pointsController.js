@@ -1,10 +1,14 @@
 import services from './services/index.js'
+import db from './db.js'
+import getPoints from './getPoints.js'
+import saveNewPoint from './saveNewPoint.js'
 import { objectIsEmpty } from './utils/index.js'
 
 export default {
   async getPointsHandler (req, res) {
     if (objectIsEmpty(req.query)) {
-      const [points, errors] = await services.getAllPoints()
+      const [points, errors] = await getPoints(db)
+      console.log(points, errors)
       if (errors) {
         res.status(500).json({
           msg: 'Internal server error'
@@ -24,7 +28,7 @@ export default {
       return
     }
 
-    const [points, errors] = await services.getPointsByDistance(req.query)
+    const [points, errors] = await getPoints(db, req.query)
     if (errors) {
       res.status(500).json({
         error: 'Internal server error'
@@ -52,9 +56,9 @@ export default {
       return
     }
 
-    const [newPointIsOk, newPointErrors] = await services.saveNewPoint({
+    const [newPointIsOk, newPointErrors] = await saveNewPoint({
       newPointObject: body,
-      db: services.db
+      db
     })
     if (!newPointIsOk) {
       res.status(500).json({
