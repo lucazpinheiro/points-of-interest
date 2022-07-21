@@ -2,11 +2,11 @@
   "name": "points-of-interest-final",
   "version": "1.0.0",
   "description": "",
-  "main": "points-of-interest.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node src/points-of-interest.js",
-    "start:dev": "nodemon src/points-of-interest.js",
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
