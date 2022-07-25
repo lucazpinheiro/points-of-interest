@@ -1,3 +1,5 @@
+import mongoose from 'mongoose'
+
 export function presentationMapper (points) {
   return points.map(point => {
     return {
@@ -47,6 +49,16 @@ export default {
       }), null]
     } catch (errors) {
       return [null, errors]
+    }
+  },
+  async connectToDB (databaseURI) {
+    try {
+      await mongoose.connect(databaseURI)
+      console.log('Connect to database')
+    } catch (err) {
+      console.log('Couldn\'t connect to database')
+      console.err(err)
+      process.exit(1)
     }
   }
 }
