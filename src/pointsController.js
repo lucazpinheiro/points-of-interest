@@ -1,11 +1,11 @@
-import { validateBody, validateQueryParams } from './lib/index.js'
-import db from './db.js'
+import validations from './lib/validations.js'
+import db from './lib/db.js'
 import model from './pointsModel.js'
-import { objectIsEmpty } from './utils/index.js'
 
 export default {
   async getPointsHandler (req, res) {
-    if (objectIsEmpty(req.query)) {
+    if (Object.keys(req.query).length === 0) {
+      console.log('!!!!!!!!', req.query)
       const [points, errors] = await db.getPointsFromDB(model)
       if (!errors) {
         res.status(200).json(points)
@@ -17,7 +17,7 @@ export default {
       return
     }
 
-    const [paramsAreOk, paramErrors] = validateQueryParams(req.query)
+    const [paramsAreOk, paramErrors] = validations.validateQueryParams(req.query)
     if (!paramsAreOk) {
       res.status(400).json({
         msg: 'bad request',
@@ -37,15 +37,8 @@ export default {
   },
   async postPointsHandler (req, res) {
     const { body } = req
-    if (objectIsEmpty(body)) {
-      res.status(400).json({
-        msg: 'bad request',
-        errors: 'body is empty'
-      })
-      return
-    }
 
-    const [bodyIsOk, bodyErrors] = validateBody(body)
+    const [bodyIsOk, bodyErrors] = validations.validateBody(body)
     if (!bodyIsOk) {
       res.status(400).json({
         msg: 'bad request',
