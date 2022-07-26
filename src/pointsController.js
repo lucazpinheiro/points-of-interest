@@ -1,21 +1,23 @@
-import services from './services/index.js'
-import { objectIsEmpty } from './utils/index.js'
+import validations from './lib/validations.js'
+import db from './lib/db.js'
+import model from './pointsModel.js'
 
 export default {
   async getPointsHandler (req, res) {
-    if (objectIsEmpty(req.query)) {
-      const [points, errors] = await services.getAllPoints()
-      if (errors) {
-        res.status(500).json({
-          msg: 'Internal server error'
-        })
+    if (Object.keys(req.query).length === 0) {
+      console.log('!!!!!!!!', req.query)
+      const [points, errors] = await db.getPointsFromDB(model)
+      if (!errors) {
+        res.status(200).json(points)
         return
       }
-      res.status(200).json(points)
+      res.status(500).json({
+        msg: 'Internal server error'
+      })
       return
     }
 
-    const [paramsAreOk, paramErrors] = services.validateQueryParams(req.query)
+    const [paramsAreOk, paramErrors] = validations.validateQueryParams(req.query)
     if (!paramsAreOk) {
       res.status(400).json({
         msg: 'bad request',
@@ -24,7 +26,7 @@ export default {
       return
     }
 
-    const [points, errors] = await services.getPointsByDistance(req.query)
+    const [points, errors] = await db.getPointsFromDB(model, req.query)
     if (errors) {
       res.status(500).json({
         error: 'Internal server error'
@@ -35,15 +37,8 @@ export default {
   },
   async postPointsHandler (req, res) {
     const { body } = req
-    if (objectIsEmpty(body)) {
-      res.status(400).json({
-        msg: 'bad request',
-        errors: 'body is empty'
-      })
-      return
-    }
 
-    const [bodyIsOk, bodyErrors] = services.validateBody(body)
+    const [bodyIsOk, bodyErrors] = validations.validateBody(body)
     if (!bodyIsOk) {
       res.status(400).json({
         msg: 'bad request',
@@ -52,7 +47,7 @@ export default {
       return
     }
 
-    const [newPointIsOk, newPointErrors] = await services.saveNewPoint(body)
+    const [newPointIsOk, newPointErrors] = await db.saveNewPointToDB(model, { ...body })
     if (!newPointIsOk) {
       res.status(500).json({
         msg: 'Internal server error'
