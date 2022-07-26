@@ -1,12 +1,12 @@
 function validateRequestBody (body) {
   const bodyErrors = {}
 
-  if (Object.keys(body).length === 0) {
-    bodyErrors.empty = 'body is empty'
-  }
-
   if (!body.name || typeof body.name !== 'string') {
     bodyErrors.name = 'property name of type string is required'
+  }
+
+  if (!body.y || typeof body.y !== 'number') {
+    bodyErrors.y = 'property y of type number is required'
   }
 
   if (!body.x || typeof body.x !== 'number') {
@@ -38,7 +38,7 @@ function validateQueryParameters (query) {
   }
 
   if (query.d < 0) {
-    paramErrors.d = 'd must be greater than 0'
+    paramErrors.d = 'd must be equal or greater than 0'
   }
 
   if (query.x < -100 || query.x > 100) {
