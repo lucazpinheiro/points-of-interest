@@ -5,7 +5,6 @@ import model from './pointsModel.js'
 export default {
   async getPointsHandler (req, res) {
     if (Object.keys(req.query).length === 0) {
-      console.log('!!!!!!!!', req.query)
       const [points, errors] = await db.getPointsFromDB(model)
       if (!errors) {
         res.status(200).json(points)
@@ -17,7 +16,7 @@ export default {
       return
     }
 
-    const [paramsAreOk, paramErrors] = validations.validateQueryParams(req.query)
+    const [paramsAreOk, paramErrors] = validations.validateQueryParameters(req.query)
     if (!paramsAreOk) {
       res.status(400).json({
         msg: 'bad request',
