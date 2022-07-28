@@ -29,13 +29,12 @@ export default {
       if (Object.keys(query).length === 0) {
         return [presentationMapper(rawRecords), null]
       }
-
       const closestPoints = filterPointsByDistance(rawRecords, query.d, {
         x_axis: query.x,
         y_axis: query.y
       })
 
-      return [closestPoints, null]
+      return [presentationMapper(closestPoints), null]
     } catch (errors) {
       return [null, errors]
     }
