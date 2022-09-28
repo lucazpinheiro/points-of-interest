@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import validations from './lib/validations.js'
-import db from './lib/db.js'
+import db from './database/db.js'
 import model from './pointsModel.js'
 
 export default {

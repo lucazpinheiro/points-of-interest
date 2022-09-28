@@ -1,4 +1,14 @@
-export class Point {
+export interface DBConnection<T> {
+  (uri: string): Promise<T>
+}
+
+export interface BasePoint {
+  name: string
+  xAxis: number
+  yAxis: number
+}
+
+export class Point implements BasePoint {
   name: string
   xAxis: number
   yAxis: number
@@ -30,4 +40,5 @@ export class Query {
 
 export interface Model {
   getAllPoints(): Promise<Point[]>
+  createPoint(point: Point): Promise<void>
 }
