@@ -42,3 +42,19 @@ export interface Model {
   getAllPoints(): Promise<Point[]>
   createPoint(point: Point): Promise<void>
 }
+
+export interface IDB<T> {
+  pointsModel: Model
+  connection: DBConnection<T>
+  connect (URI: string): Promise<void>
+  getAllPoints (): Promise<Point[]>
+  createPoint (point: Point): Promise<void>
+}
+
+export interface IService {
+  getAllPoints(): Promise<Point[]>
+  getPointsByDistance (referencePoint: Query): Promise<Point[]>
+  createNewPoint(point: Point): Promise<void>
+}
+
+export type httpMethod = 'GET' | 'POST'

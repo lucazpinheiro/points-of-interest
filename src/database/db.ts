@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
-import { Model, Point, DBConnection } from '../entities/types'
-
-export default class DB {
+import { Model, Point, DBConnection, IDB } from '../entities/types'
+export default class DB implements IDB<typeof mongoose> {
   pointsModel: Model
   connection: DBConnection<typeof mongoose>
 

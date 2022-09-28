@@ -1,57 +1,27 @@
+import express, { Express } from 'express'
 import mongoose from 'mongoose'
 import DB from './database/db'
-import { Model, Point, Query } from './entities/types'
 import ObjectModel, { mongoosePointModel } from './models/points.model'
 import Service from './services/points.service'
+import Controller from './points.controller'
 
-const mockQuery = new Query(10, 20, 10)
+const PORT = 3000
 
-async function makeTest () {
-  const service = new Service()
+const app: Express = express()
+
+app.use(express.json())
+
+async function start () {
   const db = new DB(new ObjectModel(mongoosePointModel), mongoose.connect)
-  // const db = new DB(mockModel, mongoose.connect)
+  const service = new Service(db)
+  const controller = new Controller(service)
 
   await db.connect('mongodb://localhost/test')
 
-  console.log('get points')
-  const points = await db.getAllPoints()
-  points.forEach(point => console.log(point.name))
-
-  console.log(`filter points by distance ${mockQuery.distance}`)
-  const filteredPoints = service.getPointsByDistance(mockQuery, points)
-  filteredPoints.forEach(point => console.log(point.name))
-
-  // console.log('\ncreate point')
-  // await Promise.all([
-  //   new Point('Lanchonete', 27, 12),
-  //   new Point('Posto', 31, 18),
-  //   new Point('Joalheria', 15, 12),
-  //   new Point('Floricultura', 19, 21),
-  //   new Point('Pub', 12, 8),
-  //   new Point('Supermercado', 23, 6),
-  //   new Point('Churrascaria', 28, 2)
-  // ].map(point => db.createPoint(point)))
-
-  // console.log('\nget points')
-  // const points2 = await db.getAllPoints()
-  // points2.forEach(point => console.log(point.name))
+  app.get('/points', controller.handlerGETRequest.bind(controller))
+  app.listen(PORT, () => {
+    console.log(`server is up on http://localhost:${PORT}`)
+  })
 }
 
-makeTest()
-
-// async function start () {
-//   dotenv.config()
-
-//   const pointsOfInterest = express()
-//   const PORT = process.env.PORT || 3000
-
-//   pointsOfInterest.use(express.json())
-//   pointsOfInterest.use(express.urlencoded({ extended: true }))
-//   pointsOfInterest.use('/', routes)
-
-//   await db.connectToDB(process.env.DATABASE_URL)
-
-//   pointsOfInterest.listen(PORT, () => console.log(`APP is running on localhost:${PORT}`))
-// }
-
-// start()
+start()
