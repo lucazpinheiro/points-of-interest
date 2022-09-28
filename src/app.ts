@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Express } from 'express'
 import * as dotenv from 'dotenv'
 import routes from './routes.js'
 import db from './lib/db.js'

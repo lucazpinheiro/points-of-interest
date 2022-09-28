@@ -1,9 +1,10 @@
+import { Request, Response } from 'express'
 import validations from './lib/validations.js'
 import db from './lib/db.js'
 import model from './pointsModel.js'
 
 export default {
-  async getPointsHandler (req, res) {
+  async getPointsHandler (req: Request, res: Response) {
     if (Object.keys(req.query).length === 0) {
       const [points, errors] = await db.getPointsFromDB(model)
       if (!errors) {
@@ -34,7 +35,7 @@ export default {
     }
     res.status(200).json(points)
   },
-  async postPointsHandler (req, res) {
+  async postPointsHandler (req: Request, res: Response) {
     const { body } = req
 
     const [bodyIsOk, bodyErrors] = validations.validateBody(body)
@@ -46,7 +47,7 @@ export default {
       return
     }
 
-    const [newPointIsOk, newPointErrors] = await db.saveNewPointToDB(model, { ...body })
+    const [newPointIsOk] = await db.saveNewPointToDB(model, { ...body })
     if (!newPointIsOk) {
       res.status(500).json({
         msg: 'Internal server error'
