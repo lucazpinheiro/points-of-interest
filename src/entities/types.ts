@@ -1,3 +1,5 @@
+import { Express } from 'express'
+
 export interface DBConnection<T> {
   (uri: string): Promise<T>
 }
@@ -58,3 +60,7 @@ export interface IService {
 }
 
 export type httpMethod = 'GET' | 'POST'
+
+export interface TypedRequestBody<T> extends Express.Request {
+  body: T
+}

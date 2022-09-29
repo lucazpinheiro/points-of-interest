@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import DB from './database/db'
 import ObjectModel, { mongoosePointModel } from './models/points.model'
 import Service from './services/points.service'
-import Controller from './points.controller'
+import Controller from './controllers/points.controller'
 
 const PORT = 3000
 
@@ -19,6 +19,7 @@ async function start () {
   await db.connect('mongodb://localhost/test')
 
   app.get('/points', controller.handlerGETRequest.bind(controller))
+  app.post('/points', controller.handlerPOSTRequest.bind(controller))
   app.listen(PORT, () => {
     console.log(`server is up on http://localhost:${PORT}`)
   })
