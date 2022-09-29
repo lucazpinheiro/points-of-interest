@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "start:dev": "ts-node-dev --transpile-only src/app.ts",
+    "start": "node dist/server.js",
+    "start:dev": "ts-node-dev --transpile-only src/server.ts",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
